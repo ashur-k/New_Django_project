@@ -17,5 +17,7 @@
       "**/.theia": true,
       "**/core.Microsoft*": true,
    },
-   "emmet.extensionsPath": ".theia"
+"emmet.extensionsPath": ".theia",
+"python.pythonPath": "/home/gitpod/.pyenv/shims/python",
+"editor.autoSave": "on"
 }
