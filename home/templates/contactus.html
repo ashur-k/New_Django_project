@@ -1,0 +1,82 @@
+{% extends 'homebase.html' %}
+{% block title %} Contact Us {% endblock %}
+{% block description %} {{ setting.descriptions}} {% endblock %}
+{% block keywords %} M{{ setting.keywords }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+{% block body %}
+
+	<!-- BREADCRUMB -->
+	<div id="breadcrumb">
+		<div class="container">
+			<ul class="breadcrumb">
+				<li><a href="/">Home</a></li>
+				<li class="active">About us</li>
+			</ul>
+		</div>
+	</div>
+	<!-- /BREADCRUMB -->
+<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+			
+					<div class="col-md-6">
+                    	<form id="checkout-form" class="clearfix">
+						<div class="billing-details">
+						
+							<div class="section-title">
+								<h3 class="title">Contact Form</h3>
+							</div>
+							<div class="form-group">
+								<input class="input" type="text" name="first-name" placeholder="Name">
+							</div>				
+							<div class="form-group">
+								<input class="input" type="email" name="email" placeholder="Email">
+							</div>
+							<div class="form-group">
+								<input class="input" type="text" name="address" placeholder="Address">
+							</div>
+							<div class="form-group">
+								<textarea class="input" type="text" name="city" placeholder="Your Message"></textarea>
+							</div>
+						
+						
+							<div class="form-group">
+								<input class="input" type="submit" value="Send Message">
+							</div>
+						
+						</div>
+                    	</form>
+					</div>
+
+					<div class="col-md-6">
+						<div class="shiping-methods">
+							<div class="section-title">
+								<h4 class="title">Contact Information</h4>
+							</div>
+							<div>
+							{{setting.contact|safe}}
+							</div>
+							
+							</div>
+						</div>
+
+					
+					</div>
+
+				
+
+					
+			
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+
+	<!-- /section -->
+
+ {% endblock %}
