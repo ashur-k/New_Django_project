@@ -9,11 +9,18 @@ from django.http import HttpResponseRedirect
 def index(request):
     setting = Setting.objects.get(pk=1)
     category = Category.objects.all()
+    products_slider = Product.objects.all().order_by('id')[:4]
+    products_latest = Product.objects.all().order_by('-id')[:4]
+    products_picked = Product.objects.all().order_by('?')[:4]
+
     page = "home"
     context = {
         'setting': setting,
         'page': page,
-        'category': category
+        'products_slider': products_slider,
+        'products_latest': products_latest,
+        'products_picked': products_picked,
+        'category': category,
     }
     return render(request, 'index.html', context)
 
