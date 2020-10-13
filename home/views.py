@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
 from home.models import Setting, ContactForm, ContactMessage
-from product.models import Category, Product
+from product.models import Category, Product, Images
 from django.http import HttpResponseRedirect
+from home.forms import SearchForm
+import json
 
 
 # Create your views here.
@@ -56,6 +58,67 @@ def contactus(request):
 
 
 def category_products(request, id, slug):
+    category = Category.objects.all()
+    catdata = Category.objects.get(pk=id)
     products = Product.objects.filter(category_id=id)
-   
-    return HttpResponse(products)
+
+    context = {
+        'products': products,
+        'category': category,
+        'catdata': catdata,
+    }
+
+    return render(request, 'category_products.html', context)
+
+
+def search(request):
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            catid = form.cleaned_data['catid']
+            if catid == 0:
+                products = Product.objects.filter(title__icontains=query)
+            else:
+                products = Product.objects.filter(title__icontains=query, category_id=catid)
+
+            category = Category.objects.all()
+            context = {
+                'products': products,
+                'query': query,
+                'category': category,
+            }
+            return render(request, 'search_products.html', context)
+
+    return HttpResponseRedirect('/')
+
+
+def search_auto(request):
+    if request.is_ajax():
+        q = request.GET.get('term', '')
+        products = Product.objects.filter(title__icontains=q)
+
+        results = []
+        for rs in products:
+            product_json = {}
+            product_json = rs.title + " > " + rs.category.title
+            results.append(product_json)
+        print(results)
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
+
+
+def product_detail(request, id, slug):
+    category = Category.objects.all()
+    product = Product.objects.get(pk=id)
+    images = Images.objects.filter(product_id=id)
+    context = {
+        'product': product,
+        'category': category,
+        'images': images,
+    }
+
+    return render(request, 'product_detail.html', context)
