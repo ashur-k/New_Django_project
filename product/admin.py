@@ -1,5 +1,5 @@
 from django.contrib import admin
-from product.models import Category, Product, Images
+from product.models import Category, Product, Images, Comment
 from mptt.admin import DraggableMPTTAdmin
 
 
@@ -12,7 +12,8 @@ class CategoryAdmin(admin.ModelAdmin):
 class CategoryAdmin2(DraggableMPTTAdmin):
     mptt_indent_field = "title"
     list_display = ('tree_actions', 'indented_title',
-                    'related_products_count', 'related_products_cumulative_count')
+                    'related_products_count',
+                    'related_products_cumulative_count')
     list_display_links = ('indented_title',)
     prepopulated_fields = {'slug': ('title',)}
 
@@ -57,6 +58,13 @@ class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
 
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['subject', 'comment', 'status', 'create_at']
+    list_filter = ['status']
+    readonly_fields = ('subject', 'rate', 'comment', 'ip', 'user', 'product')
+
+
 admin.site.register(Category, CategoryAdmin2)
 admin.site.register(Product, ProductAdmin)
+admin.site.register(Comment, CommentAdmin)
 admin.site.register(Images)

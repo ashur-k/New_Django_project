@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
+from django.shortcuts import render, redirect, HttpResponse
+
 from home.models import Setting, ContactForm, ContactMessage
-from product.models import Category, Product, Images
-from django.http import HttpResponseRedirect
+from product.models import Category, Product, Images, Comment
+
 from home.forms import SearchForm
 import json
-
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 def index(request):
@@ -28,14 +29,17 @@ def index(request):
 
 
 def aboutus(request):
+    category = Category.objects.all()
     setting = Setting.objects.get(pk=1)
     context = {
             'setting': setting,
+            'category': category,
         }
     return render(request, 'about.html', context)
 
 
 def contactus(request):
+    category = Category.objects.all()
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -53,6 +57,7 @@ def contactus(request):
     context = {
         'setting': setting,
         'form': form,
+        'category': category,
     }
     return render(request, 'contactus.html', context)
 
@@ -114,11 +119,14 @@ def search_auto(request):
 def product_detail(request, id, slug):
     category = Category.objects.all()
     product = Product.objects.get(pk=id)
-    images = Images.objects.filter(product_id=id)
+    images = Images.objects.filter(product_id=id)    
+    comments = Comment.objects.filter(product_id=id, status='True')   
+
     context = {
         'product': product,
         'category': category,
         'images': images,
+        'comments': comments,
     }
 
     return render(request, 'product_detail.html', context)
