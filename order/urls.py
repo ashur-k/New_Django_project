@@ -7,4 +7,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('addtoshopcart/<int:id>', views.addtoshopcart, name='addtoshopcart'),
     path('deletefromcart/<int:id>', views.deletefromcart, name='deletefromcart'),
+    path('orderproduct/', views.orderproduct, name='orderproduct'),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
