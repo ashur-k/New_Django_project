@@ -2,12 +2,12 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from product.models import Category
+from product.models import Category, Comment
 from user.models import UserProfile
 from user.forms import SignUpForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
-
+from order.models import Order, OrderProduct
 
 
 # Create your views here.
@@ -72,7 +72,12 @@ def signup_form(request):
     return render(request, 'signup_form.html', context)
 
 
-@login_required(login_url='/login') # Check login
+def logout_func(request):
+    logout(request)
+    return HttpResponseRedirect('/')
+
+
+@login_required(login_url='/login')  # Check login
 def user_update(request):
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user) # request.user is user  data
@@ -129,6 +134,71 @@ def user_password(request):
         )
 
 
-def logout_func(request):
-    logout(request)
-    return HttpResponseRedirect('/')
+@login_required(login_url='/login')  # Check login
+def user_orders(request):
+    category = Category.objects.all()
+    current_user = request.user
+    orders = Order.objects.filter(user_id=current_user.id)
+    context = {
+        'category': category,
+        'orders': orders,
+    }
+    return render(request, 'user_orders.html', context)
+
+
+@login_required(login_url='/login')  # Check login
+def user_orderdetail(request, id):
+    category = Category.objects.all()
+    current_user = request.user
+    order = Order.objects.get(user_id=current_user.id, id=id)
+    orderitems = OrderProduct.objects.filter(order_id=id)
+    context = {
+        'category': category,
+        'order': order,
+        'orderitems': orderitems,
+    }
+    return render(request, 'user_order_detail.html', context)
+
+
+@login_required(login_url='/login')  # Check login
+def user_order_product(request):
+    category = Category.objects.all()
+    current_user = request.user
+    order_product = OrderProduct.objects.filter(user_id=current_user.id).order_by('-id')
+    context = {'category': category,
+               'order_product': order_product,
+               }
+    return render(request, 'user_order_products.html', context)
+
+
+@login_required(login_url='/login')  # Check login
+def user_order_product_detail(request, id, oid):
+    category = Category.objects.all()
+    current_user = request.user
+    order = Order.objects.get(user_id=current_user.id, id=oid)
+    orderitems = OrderProduct.objects.filter(id=id, user_id=current_user.id)
+    context = {
+        'category': category,
+        'order': order,
+        'orderitems': orderitems,
+    }
+    return render(request, 'user_order_detail.html', context)
+
+
+def user_comments(request):
+    category = Category.objects.all()
+    current_user = request.user
+    comments = Comment.objects.filter(user_id=current_user.id)
+    context = {
+        'category': category,
+        'comments': comments,
+    }
+    return render(request, 'user_comments.html', context)
+
+
+@login_required(login_url='/login')  # Check login
+def user_deletecomment(request, id):
+    current_user = request.user
+    Comment.objects.filter(id=id, user_id=current_user.id).delete()
+    messages.success(request, 'Comment deleted..')
+    return HttpResponseRedirect('/user/comments')

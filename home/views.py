@@ -1,12 +1,13 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, HttpResponse
 
-from home.models import Setting, ContactForm, ContactMessage
+from home.models import Setting, ContactForm, ContactMessage, FAQ
 from product.models import Category, Product, Images, Comment
 
 from home.forms import SearchForm
 import json
 from django.http import HttpResponseRedirect
+
 
 # Create your views here.
 def index(request):
@@ -119,8 +120,9 @@ def search_auto(request):
 def product_detail(request, id, slug):
     category = Category.objects.all()
     product = Product.objects.get(pk=id)
-    images = Images.objects.filter(product_id=id)    
-    comments = Comment.objects.filter(product_id=id, status='True')   
+    images = Images.objects.filter(product_id=id)
+    comments = Comment.objects.filter(product_id=id, status='True')
+    print(product.averageview)
 
     context = {
         'product': product,
@@ -130,3 +132,13 @@ def product_detail(request, id, slug):
     }
 
     return render(request, 'product_detail.html', context)
+
+
+def faq(request):
+    category = Category.objects.all()
+    faq = FAQ.objects.filter(status="True").order_by("ordernumber")
+    context = {
+        'category': category,
+        'faq': faq,
+    }
+    return render(request, 'faq.html', context)

@@ -58,14 +58,15 @@
 							<h2 class="product-name">{{product.title}}</h2>
 							<h3 class="product-price">{{product.price}}<del class="product-old-price">$45.00</del></h3>
 							<div>
-								<div class="product-rating">
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star-o empty"></i>
-								</div>
-								<a href="#">3 Review(s) / Add Review</a>
+								 <div class="product-rating">
+                                    <i class="fa fa-star{% if product.averageview < 1%}-o empty{% endif%}"></i>
+                                    <i class="fa fa-star{% if product.averageview < 2%}-o empty{% endif%}"></i>
+                                    <i class="fa fa-star{% if product.averageview < 3%}-o empty{% endif%}"></i>
+                                    <i class="fa fa-star{% if product.averageview < 4%}-o empty{% endif%}"></i>
+                                    <i class="fa fa-star{% if product.averageview < 5%}-o empty{% endif%}"></i>
+                                    {{ product.averageview |stringformat:".2f"}}
+                                </div>
+								<a href="#tab1"> {{ product.counterview }}  Review(s) / Add Review</a>
 							</div>
 							<p><strong>Availability:</strong> In Stock</p>
 							<p><strong>Brand:</strong> E-SHOP</p>
@@ -107,7 +108,7 @@
 						<div class="product-tab">
 							<ul class="tab-nav">
 								<li class="active"><a data-toggle="tab" href="#tab1">Description</a></li>
-								<li><a data-toggle="tab" href="#tab2">Reviews (3)</a></li>
+								<li><a data-toggle="tab" href="#tab2">{{ product.counterview }} Reviews</a></li>
 							</ul>
 							<div class="tab-content">
 								<div id="tab1" class="tab-pane fade in active">
