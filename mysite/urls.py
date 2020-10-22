@@ -42,4 +42,5 @@ urlpatterns = [
     path('logout/', UserViews.logout_func, name='logout_func'),
     path('signup/', UserViews.signup_form, name='signup_form'),
     path('faq/', views.faq, name='faq'),
+    path('ajaxcolor/', views.ajaxcolor, name='ajaxcolor'),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

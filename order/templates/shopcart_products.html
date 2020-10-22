@@ -43,16 +43,36 @@
                                         </thead>
                                         <tbody>
                                             {% for rs in shopcart %}
-
                                             <tr>
-                                                <td class="thumb"><img src="{{ rs.product.image.url }}" alt=""></td>
-                                                <td class="details">
-                                                    <a href="/product/{{rs.product.id}}/{{rs.product.slug}}">{{ rs.product }}</a>
-                                                    
+                                                <td class="thumb">
+                                                    {% if rs.variant.image_id  > 0 %}
+                                                        <img src="{{rs.variant.image }}" alt="">
+                                                    {% else %}
+                                                        <img src="{{rs.product.image.url}}" alt="">
+                                                    {% endif %}
                                                 </td>
-                                                <td class="price text-center"><strong>{{ rs.product.price }}</strong></td>
+                                                <td class="details">
+                                                    <a href="/product/{{ rs.product.id }}/{{ rs.product.slug }}">{{rs.product}} {{ rs.variant.size }} {{ rs.variant.color }}</a> 
+                                                </td>
+                                                <td class="price text-center">
+                                                    <strong>
+                                                        {% if rs.product.variant == 'None' %}
+                                                            {{ rs.product.price }}
+                                                        {% else %}
+                                                            {{ rs.variant.price }}
+                                                        {% endif %}
+                                                    </strong>
+                                                </td>
                                                 <td class="qty text-center"><strong>{{ rs.quantity }}</strong></td>
-                                                <td class="total text-center"><strong class="primary-color">{{ rs.amount }}</strong></td>
+                                                 <td class="total text-center">
+                                                    <strong class="primary-color">
+                                                        ${% if rs.product.variant == 'None' %}
+                                                            {{ rs.amount }}
+                                                        {% else %}
+                                                            {{ rs.varamount }}
+                                                        {% endif %}
+                                                    </strong>
+                                                </td>
                                                 <td class="text-right">
                                                     <a href="/order/deletefromcart/{{ rs.id }}" onclick="return confirm('Delete ! Are you sure?')" class="main-btn icon-btn"><i class="fa fa-close"></i></a>
                                                 </td>
@@ -60,6 +80,13 @@
                                             {% endfor %}
                                         </tbody>
                                         <tfoot>
+                                            <tr>
+                                                <th class="empty" colspan="3"></th>
+                                                <th>SUBTOTAL</th>
+                                                <th colspan="2" class="sub-total">
+                                                    
+                                                </th>
+                                            </tr>
                                         
                                             <tr>
                                                 <th class="empty" colspan="3"></th>
@@ -69,7 +96,7 @@
                                             <tr>
                                                 <th class="empty" colspan="3"></th>
                                                 <th>TOTAL</th>
-                                                <th colspan="2" class="total">{{ total }}</th>
+                                                <th colspan="2" class="total">{{ total }} </th>
                                             </tr>
                                         </tfoot>
                     </table>
