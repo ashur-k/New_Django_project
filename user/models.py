@@ -1,9 +1,11 @@
+from currencies.models import Currency
 from django.contrib.auth.models import User
-from django.utils.safestring import mark_safe
 from django.db import models
 
-
 # Create your models here.
+from django.utils.safestring import mark_safe
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(blank=True, max_length=20)
@@ -11,6 +13,7 @@ class UserProfile(models.Model):
     city = models.CharField(blank=True, max_length=20)
     country = models.CharField(blank=True, max_length=50)
     image = models.ImageField(blank=True, upload_to='images/users/')
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, null=True,blank=True)
 
     def __str__(self):
         return self.user.username

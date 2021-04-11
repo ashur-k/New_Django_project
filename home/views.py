@@ -1,3 +1,4 @@
+from mysite import settings
 import json
 from django.contrib import messages
 from django.shortcuts import render, redirect
@@ -11,6 +12,10 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
 # Create your views here.
 def index(request):
+    if not request.session.has_key('currency'):
+        request.session['currency'] = settings.DEFAULT_CURRENCY
+
+    print(settings.DEFAULT_CURRENCY)
     setting = Setting.objects.get(pk=1)
     category = Category.objects.all()
     products_slider = Product.objects.all().order_by('id')[:4]
@@ -124,7 +129,6 @@ def product_detail(request, id, slug):
     product = Product.objects.get(pk=id)
     images = Images.objects.filter(product_id=id)
     comments = Comment.objects.filter(product_id=id, status='True')
-    print(product.averageview)
 
     context = {
         'product': product,
@@ -142,9 +146,10 @@ def product_detail(request, id, slug):
             query += variant.title + ' Size:' + str(variant.size) + ' Color: ' + str(variant.color)
         else:
             variants = Variants.objects.filter(product_id=id)
-            colors = Variants.objects.filter(product_id=id, size_id=variants[0].size_id )
+            colors = Variants.objects.filter(product_id=id, size_id=variants[0].size_id)
             sizes = Variants.objects.raw('SELECT * FROM  product_variants  WHERE product_id=%s GROUP BY size_id',[id])
             variant = Variants.objects.get(id=variants[0].id)
+
 
         context.update({
             'sizes': sizes,
@@ -152,6 +157,7 @@ def product_detail(request, id, slug):
             'variant': variant,
             'query': query,
                         })
+
     return render(request, 'product_detail.html', context)
 
 
@@ -179,3 +185,10 @@ def faq(request):
         'faq': faq,
     }
     return render(request, 'faq.html', context)
+
+
+def selectcurrency(request):
+    lasturl = request.META.get('HTTP_REFERER')
+    if request.method == 'POST':  # check post
+        request.session['currency'] = request.POST['currency']
+    return HttpResponseRedirect(lasturl)

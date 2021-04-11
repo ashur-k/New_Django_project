@@ -5,6 +5,7 @@ from user.models import UserProfile
 # Register your models here.
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = [
+        'id',
         'user_name',
         'address',
         'phone',

@@ -33,11 +33,13 @@ class CategoryAdmin2(DraggableMPTTAdmin):
                 cumulative=True)
 
         # Add non cumulative product count
-        qs = Category.objects.add_related_count(qs,
-                Product,
-                'category',
-                'products_count',
-                cumulative=False)
+        qs = Category.objects.add_related_count(
+            qs,
+            Product,
+            'category',
+            'products_count',
+            cumulative=False
+            )
         return qs
 
     def related_products_count(self, instance):
@@ -69,7 +71,7 @@ class ImagesAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['title', 'category', 'variant', 'status', 'image_tag']
+    list_display = ['id', 'title', 'category', 'variant', 'status', 'image_tag']
     list_filter = ['category']
     readonly_fields = ('image_tag',)
     inlines = [ProductImageInline, ProductVariantsInline]

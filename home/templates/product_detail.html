@@ -60,7 +60,7 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-                        <div class="product-body">
+                    <div class="product-body">
                             <div class="product-label">
                                 <span>New</span>
                                 <span class="sale">-20%</span>
@@ -190,6 +190,7 @@
                                     {% endif %}
 
                             {% if  product.variant != 'None'   %}
+                                
                                 <form action="/order/addtoshopcart/{{ product.id }}" method="post"  id="addchart-form">
                                     {% csrf_token %}
                                     <input type="hidden" name="variantid" id="variantid" value="{{ variant.id }}">
@@ -197,6 +198,7 @@
                                         <p><strong>Availability:</strong> {% if variant.quantity > 0  %} In Stock {% else %} Out of Stock {% endif %}</p>
                                         <p><strong>Selected :</strong> Size : {{ variant.size }}  Color : {{ variant.color }} </p>
                                         <h3 class="product-price">${{ variant.price}}</h3>
+                                        
                                         <div class="qty-input">
                                             <span class="text-uppercase">QTY: </span>
                                             <input class="input" name="quantity" type="number" value="1" min="1" max="{{ variant.quantity }}">
@@ -209,10 +211,11 @@
                             {% else %}
 
                                 <form action="/order/addtoshopcart/{{ product.id }}" method="post"  id="addchart-form">
+                                <h1>{{ product.id }}</h1>
                                     {% csrf_token %}
                                     <div id="SelectedProduct">
                                         <p><strong>Availability:</strong> {% if product.amount > 0  %} In Stock {% else %} Out of Stock {% endif %}</p>
-                                        <h3 class="product-price">{{ product.price }}</h3>
+                                        <h3 class="product-price">Product Price: {{ product.price }}</h3>
                                         <div class="qty-input">
                                             <span class="text-uppercase">QTY: </span>
                                             <input class="input" name="quantity" type="number" value="1" min="1" max="{{ product.amount }}">
@@ -234,7 +237,8 @@
                         </div>
                     </div>
                     </div>
-					<div class="col-md-12">
+				</div>
+                <div class="col-md-12">
                 <div class="product-tab">
                     <ul class="tab-nav">
                         <li class="active"><a data-toggle="tab" href="#tab1">Details</a></li>
@@ -320,8 +324,6 @@
                     </div>
                 </div>
                     </div>
-
-				</div>
 				<!-- /Product Details -->
 			</div>
 			<!-- /row -->

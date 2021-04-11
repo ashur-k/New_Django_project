@@ -30,6 +30,9 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('admin/', admin.site.urls),
+    path('currencies/', include('currencies.urls')),
+
+    path('selectcurrency', views.selectcurrency, name='selectcurrency'),
 
     path('about/', views.aboutus, name='aboutus'),
     path('contact/', views.contactus, name='contactus'),

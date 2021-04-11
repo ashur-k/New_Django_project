@@ -155,7 +155,11 @@ def orderproduct(request):
             return HttpResponseRedirect("/order/orderproduct")
 
     form = OrderForm()
+    print(current_user.id)
+   
     profile = UserProfile.objects.get(user_id=current_user.id)
+
+
     context = {'shopcart': shopcart,
                'category': category,
                'total': total,

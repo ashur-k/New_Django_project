@@ -16,7 +16,14 @@
 					<ul class="category-list">
                     {% recursetree category %}
 						<li class="dropdown side-dropdown">
-							<a href="/category/{{ node.id }}/{{ node.slug }}" class="dropdown-toggle"{% if not node.is_leaf_node %} data-toggle="dropdown" aria-expanded="true"{% endif %}>{{ node.title }}<i class="fa fa-angle-right"></i></a>
+                            <a href="/category/{{ node.id }}/{{ node.slug }}" class="dropdown-toggle"
+                            {% if not node.is_leaf_node %} 
+                                data-toggle="dropdown" 
+                                aria-expanded="true"
+                            {% endif %}>
+                                as {{ node.title }}
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 							<div class="custom-menu">
 								<div class="row">
 									<div class="col-md-4">
@@ -29,10 +36,7 @@
                                         {% endif %}
 										<hr class="hidden-md hidden-lg">
 									</div>
-									
-										
 								</div>
-							
 							</div>
 						</li>
                          {% endrecursetree %}					
